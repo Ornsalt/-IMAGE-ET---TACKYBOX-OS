@@ -1,0 +1,30 @@
+services:
+    aeclient:
+        image: imageetdev/tackybox-aeclient:transfer-only
+        restart: on-failure:always
+        volumes:
+            - type: bind
+              source: /home/imageet/Documents/examens
+              target: /appli/examens/
+        environment:
+            - CRONTAB=5 # Optionnal : Crontab argument allow program to log when the next activation will be.
+            - PORT_SQL=8806 # Optional : default in 3306
+            - TACKYBOX=TKB2M-TEST # My AET. Ip and port aren't needed because we are client
+            - DEST=MBP_Clement@10.35.135.90:11112 # Final Destination. Template is AET@ip:port
+            - SQL=imageet:tkb_image_et@192.168.193.128:db # Template is : "user:pwd@ip:db"
+            - PYTHONUNBUFFERED=1 # For better python logging
+    db:
+        image: mysql:5.7
+        restart: always
+        environment:
+            MYSQL_DATABASE: 'db'
+            MYSQL_USER: 'imageet'
+            MYSQL_PASSWORD: 'tkb_image_et'
+            MYSQL_ROOT_PASSWORD: 'root_root'
+        ports:
+            - 8806:3306
+        volumes:
+            - mysql-data:/var/lib/mysql
+volumes:
+    mysql-data:
+        external: true # Must use "docker volume create --name=mysql-data" before
