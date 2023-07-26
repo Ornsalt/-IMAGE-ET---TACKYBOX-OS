@@ -1,0 +1,49 @@
+services:
+    aeserver:
+        image: imageetdev/tackybox-aeserver:transfer-only
+        restart: on-failure:1
+        ports:
+            - 11113:11113
+        volumes:
+            - type: bind
+              source: /home/imageet/Documents/examens
+              target: /appli/examens
+        depends_on:
+            - db
+        environment:
+            - TACKYBOX=TKB2-TEST@192.168.193.128:11113 # My AET. Template is AET@ip:port
+            - SQL=imageet:tkb_image_et@192.168.193.128:db # Template is : "user:pwd@ip:db"
+            - PYTHONUNBUFFERED=1 # For better python logging
+
+    rsync_wrapper:
+        image: imageetdev/tackybox-rsync-wrapper:transfer-only
+        restart: on-failure:always
+        volumes:
+            - type: bind
+              source: /home/imageet/Documents/examens
+              target: /appli/examens
+            - type: bind # Allow use of ssh with host keys
+              source: ~/.ssh
+              target: /root/.ssh
+        environment:
+            - DESTINATIONS=adrien@10.35.135.61 # Template : "login@server:port2;login2@server2:port2". Port is optionnal, only for connection error handling
+            - SQL=imageet:tkb_image_et@192.168.193.128:db # Template is : "user:pwd@ip:db"
+            - SAFETY=10000 # Maximum number of exam on the box. If reached, flush the database and examens.
+            - MULTITHREAD=4 # Maximum number of simultaneous rsync connection
+            - PYTHONUNBUFFERED=1 # For better python logging
+    db:
+        image: mysql:5.7
+        restart: always
+        environment:
+            MYSQL_DATABASE: 'db'
+            MYSQL_USER: 'imageet'
+            MYSQL_PASSWORD: 'tkb_image_et'
+            MYSQL_ROOT_PASSWORD: 'root_root'
+        ports:
+            - 3306:3306
+        volumes:
+            - mysql-data:/var/lib/mysql
+
+volumes:
+    mysql-data:
+        external: true # Must use "docker volume create --name=mysql-data" before
