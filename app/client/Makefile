@@ -13,8 +13,8 @@
 
 ## Name and Path of the executable/project
 FILE	= docker-compose.yml
-APP		= $(shell basename $(shell pwd))
-LOG		= $(APP).log
+APP	= $(shell basename $(shell pwd))
+LOG	= $(APP).log
 
 ########################
 ## ARGUMENTS VARIABLE ##
@@ -23,16 +23,16 @@ LOG		= $(APP).log
 ## App varaible
 IMAGE	= $(shell sed -nr "/^\[$(APP)\]/ { :l /^sImage[ ]*=/ { s/[^=]*=[ ]*//; p; q;}; n; b l;}" $(INI))
 DEST	= $(shell sed -nr "/^\[$(APP)\]/ { :l /^sDest[ ]*=/ { s/[^=]*=[ ]*//; p; q;}; n; b l;}" $(INI))
-AET		= $(shell sed -nr "/^\[$(APP)\]/ { :l /^sAET[ ]*=/ { s/[^=]*=[ ]*//; p; q;}; n; b l;}" $(INI))
+AET	= $(shell sed -nr "/^\[$(APP)\]/ { :l /^sAET[ ]*=/ { s/[^=]*=[ ]*//; p; q;}; n; b l;}" $(INI))
 
 ## DBMS / Global variable
 SOURCE	= $(shell sed -nr "/^\[DBMS\]/ { :l /^sSource[ ]*=/ { s/[^=]*=[ ]*//; p; q;}; n; b l;}" $(INI))
 TARGET	= $(shell sed -nr "/^\[DBMS\]/ { :l /^sTarget[ ]*=/ { s/[^=]*=[ ]*//; p; q;}; n; b l;}" $(INI))
 NAME	= $(shell sed -nr "/^\[DBMS\]/ { :l /^sName[ ]*=/ { s/[^=]*=[ ]*//; p; q;}; n; b l;}" $(INI))
 PORT	= $(shell sed -nr "/^\[DBMS\]/ { :l /^iPort[ ]*=/ { s/[^=]*=[ ]*//; p; q;}; n; b l;}" $(INI))
-USR		= $(shell sed -nr "/^\[DBMS\]/ { :l /^sUser[ ]*=/ { s/[^=]*=[ ]*//; p; q;}; n; b l;}" $(INI))
-PWD		= $(shell sed -nr "/^\[DBMS\]/ { :l /^sPWD[ ]*=/ { s/[^=]*=[ ]*//; p; q;}; n; b l;}" $(INI))
-IP		= $(shell sed -nr "/^\[GLOBAL\]/ { :l /^sIP[ ]*=/ { s/[^=]*=[ ]*//; p; q;}; n; b l;}" $(INI))
+USR	= $(shell sed -nr "/^\[DBMS\]/ { :l /^sUser[ ]*=/ { s/[^=]*=[ ]*//; p; q;}; n; b l;}" $(INI))
+PWD	= $(shell sed -nr "/^\[DBMS\]/ { :l /^sPWD[ ]*=/ { s/[^=]*=[ ]*//; p; q;}; n; b l;}" $(INI))
+IP	= $(shell sed -nr "/^\[GLOBAL\]/ { :l /^sIP[ ]*=/ { s/[^=]*=[ ]*//; p; q;}; n; b l;}" $(INI))
 
 ######################
 ## MAKEFILE VARIABLE #
@@ -48,6 +48,7 @@ MAKEFLAGS	+= --no-print-directory
 clean:
 	@echo "🧹 Killer Clean !"
 	@-docker rm -f $(APP) > /dev/null 2> $(LOG)
+	@-rm -f $(LOG)
 
 compose:
 	@echo "services:" > $(FILE)
