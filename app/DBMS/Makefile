@@ -13,8 +13,8 @@
 
 ## Name and Path of the executable/project
 FILE	= docker-compose.yml
-APP		= $(shell basename $(shell pwd))
-LOG		= $(APP).log
+APP	= $(shell basename $(shell pwd))
+LOG	= $(APP).log
 
 ########################
 ## ARGUMENTS VARIABLE ##
@@ -27,8 +27,8 @@ IMAGE	= $(shell sed -nr "/^\[$(APP)\]/ { :l /^sImage[ ]*=/ { s/[^=]*=[ ]*//; p; 
 NAME	= $(shell sed -nr "/^\[$(APP)\]/ { :l /^sName[ ]*=/ { s/[^=]*=[ ]*//; p; q;}; n; b l;}" $(INI))
 ROOT	= $(shell sed -nr "/^\[$(APP)\]/ { :l /^sRoot[ ]*=/ { s/[^=]*=[ ]*//; p; q;}; n; b l;}" $(INI))
 PORT	= $(shell sed -nr "/^\[$(APP)\]/ { :l /^iPort[ ]*=/ { s/[^=]*=[ ]*//; p; q;}; n; b l;}" $(INI))
-USR		= $(shell sed -nr "/^\[$(APP)\]/ { :l /^sUser[ ]*=/ { s/[^=]*=[ ]*//; p; q;}; n; b l;}" $(INI))
-PWD		= $(shell sed -nr "/^\[$(APP)\]/ { :l /^sPWD[ ]*=/ { s/[^=]*=[ ]*//; p; q;}; n; b l;}" $(INI))
+USR	= $(shell sed -nr "/^\[$(APP)\]/ { :l /^sUser[ ]*=/ { s/[^=]*=[ ]*//; p; q;}; n; b l;}" $(INI))
+PWD	= $(shell sed -nr "/^\[$(APP)\]/ { :l /^sPWD[ ]*=/ { s/[^=]*=[ ]*//; p; q;}; n; b l;}" $(INI))
 
 ######################
 ## MAKEFILE VARIABLE #
@@ -46,6 +46,7 @@ clean:
 	@-docker rm -f $(NAME) > /dev/null 2> $(LOG)
 	@-docker volume rm -f mysql-data > /dev/null 2> $(LOG)
 	@-rmdir -r $(patsubst "%",%,$(SOURCE)) > /dev/null 2> $(LOG)
+	@-rm -f $(LOG)
 
 compose:
 	@mkdir -p $(patsubst "%",%,$(SOURCE)) > /dev/null 2> $(LOG)
