@@ -34,11 +34,15 @@ make env && make DBSM
 
 ## MOTHER
 
+* You need to rename the aet and destination on the .toml.
+
 ```shell
 make env && make server
 ```
 
 ## DAUTHER
+
+* You need to rename the aet and destination on the .toml.
 
 ```shell
 make env && make client
