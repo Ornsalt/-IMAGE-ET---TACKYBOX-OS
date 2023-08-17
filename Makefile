@@ -103,7 +103,7 @@ purge: clean
 	@echo "y\n" | docker system prune --all --volumes > /dev/null
 
 $(CLN):
-	make -C $(DIR)$(subst clean_,,$@)/ clean
+	@make -C $(DIR)$(subst clean_,,$@)/ clean
 
 $(SRC):
 	@echo "🔮 \033[1m$@ on $(CARD):$(IP)\033[0m"
