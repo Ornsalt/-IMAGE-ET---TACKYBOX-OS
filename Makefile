@@ -32,7 +32,7 @@ SRC		= $(filter-out GLOBAL, $(shell grep -o '\[.*\]' ${INI} | sed 's/"//g' | sed
 CLN		= $(addprefix clean_, $(SRC))
 
 ## [DEBUGS] Networks variables.
-CARD	= $(shell ip route | grep default | sed -e "s/^.*dev.//" -e "s/.proto.*//")
+CARD		= $(shell ip route | grep default | sed -e "s/^.*dev.//" -e "s/.proto.*//")
 IP		= $(shell hostname -I | cut -d ' ' -f1)
 
 ########################
@@ -46,8 +46,8 @@ NAME	= db
 PORT	= 3306
 USER	= imageet
 ROOT	= root_root
-PWD		= tkb_image_et
-IMG		= mysql:5.7
+PWD	= tkb_image_et
+IMG	= mysql:5.7
 
 #######################
 ## MAKEFILE VARIABLE ##
@@ -103,8 +103,8 @@ purge: clean
 	@echo "y\n" | docker system prune --all --volumes > /dev/null
 
 $(CLN):
-	@make -C $(DIR)/$@/ clean
+	@make -C $(DIR)$(subst clean_,,$@)/ clean
 
 $(SRC):
 	@echo "🔮 \033[1m$@ on $(CARD):$(IP)\033[0m"
-	@make -C $(DIR)/$@/ compose INI=../../$(INI)
+	@make -C $(DIR)$@/ compose INI=../../$(INI)
